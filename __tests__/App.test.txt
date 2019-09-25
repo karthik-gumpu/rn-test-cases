@@ -1,0 +1,26 @@
+import React from 'react';
+import Enzyme, {shallow} from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+import App from '../App';
+import HeroPlaceholder from '../components/placeholder';
+import { cardData } from '../data/cardData';
+
+jest.mock('NativeAnimatedHelper');
+Enzyme.configure({ adapter: new Adapter()})
+
+describe('App Tests', () => {
+    it('Renders Placeholder when no data available', ()=>{
+        const wrapper = shallow(<App/>);
+        expect(wrapper.state().data).toHaveLength(4);
+        expect(wrapper.find(HeroPlaceholder)).toHaveLength(4);
+    });
+
+    it('Not renders Placeholder when data available', ()=>{
+        const wrapper = shallow(<App/>);
+        wrapper.setState({ data: cardData });
+        expect(wrapper.state().data).toHaveLength(cardData.length);
+        expect(wrapper.find(HeroPlaceholder)).toHaveLength(0);
+    });
+
+});
